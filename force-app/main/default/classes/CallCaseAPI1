@@ -1,0 +1,58 @@
+@RestResource(urlMapping='/v1/Case/*')
+global with sharing class CallCaseAPI 
+{
+    @HttpGet
+    global static Case getCase() 
+    {
+        System.debug('Enter Get Case=================');
+        String caseNumber = RestContext.request.params.get('CaseNumber');
+        return [SELECT Id, CaseNumber, Subject, Description 
+                FROM Case 
+                WHERE CaseNumber = :caseNumber];
+    }
+
+    @HttpPost
+    global static String PostCase(String subj, String des) 
+    {
+        System.debug('Enter Create Case=================');
+        Case newCase = new Case(Subject = subj, Description = des);
+        insert newCase;
+        return newCase.Id;
+    }
+
+    @HttpPatch
+    global static void patchCase() 
+    {
+        System.debug('Enter Patch Case=================');
+        String caseNumber = RestContext.request.params.get('CaseNumber');
+        Case existingCase = [SELECT Id 
+                             FROM Case 
+                             WHERE CaseNumber = :caseNumber];
+        // Update the case fields as needed
+        update existingCase;
+    }
+
+    @HttpPut
+    global static void putCase() 
+    {
+        System.debug('Enter Put Case=================');
+        String caseNumber = RestContext.request.params.get('CaseNumber');
+        Case existingCase = [SELECT Id 
+                             FROM Case 
+                             WHERE CaseNumber = :caseNumber];
+        // Replace the case fields with new values
+        update existingCase;
+    }
+
+    @HttpDelete
+    global static void deleteCase() 
+    {
+        System.debug('Enter Delete Case=================');
+        String caseNumber = RestContext.request.params.get('CaseNumber');
+        Case existingCase = [SELECT Id 
+                             FROM Case 
+                             WHERE CaseNumber = :caseNumber];
+        delete existingCase;
+    }
+
+}
