@@ -8,9 +8,9 @@ private class AccountServiceTest
     String acctNumber = 'SFDC';
     String tickerSymbol = 'CRM';
     Test.startTest();
-      AccountService service = new AccountService();
-      Account newAcct = service.createAccount( acctName, acctNumber, tickerSymbol );
-      insert newAcct;
+    AccountService service = new AccountService();
+    Account newAcct = AccountService.createAccount( acctName, acctNumber );
+    insert newAcct;
     Test.stopTest();
     List<Account> accts = [ SELECT Id, Name, AccountNumber, TickerSymbol FROM Account WHERE Id = :newAcct.Id ];
     System.assertEquals( 1, accts.size(), 'should have found new account' );
